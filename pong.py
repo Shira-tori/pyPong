@@ -143,9 +143,7 @@ def game_loop(player1score, player2score):
                         screen.blit(exitText, (SCREEN_SIZE[0]/2 - exitText.get_width()/2, 330))
                         pygame.display.update()
                         Clock.tick(60)  
-                if event.key == K_F1:
-                    player2score += 1
-
+                        
             if event.type == KEYUP:
                 if event.key == K_w:
                     vyAcc = 0
