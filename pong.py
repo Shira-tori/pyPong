@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pygame, sys, local, random
 from pygame.locals import *
 from local import *
@@ -142,6 +143,8 @@ def game_loop(player1score, player2score):
                         screen.blit(exitText, (SCREEN_SIZE[0]/2 - exitText.get_width()/2, 330))
                         pygame.display.update()
                         Clock.tick(60)  
+                if event.key == K_F1:
+                    player2score += 1
 
             if event.type == KEYUP:
                 if event.key == K_w:
@@ -166,7 +169,7 @@ def game_loop(player1score, player2score):
         score2 = myFont.render(str(player2score), False, white)
         screen.blit(score1, (SCREEN_SIZE[0]/3 - score1.get_width()/2, 20))
         screen.blit(score2, (SCREEN_SIZE[0]/3 - score2.get_width()/2 + SCREEN_SIZE[0]/3, 20))
-        player2pad.y = ball.y
+        #player2pad.y = ball.y
         if vyAcc != 0:
             vyMin += vyAcc
             if vyMin >= vyMax:
@@ -221,11 +224,125 @@ def game_loop(player1score, player2score):
             pygame.mixer.music.load("435413__v-ktor__explosion12.wav")
             pygame.mixer.music.play()
             pygame.time.wait(1000)
+            player1score += 1
+            if player1score == 10 or player2score == 10:
+                game_over = True
+                gameOverText = myFont.render("GAME OVER", False, white)
+                gameOverText = pygame.transform.scale(gameOverText, (gameOverText.get_width()*5, gameOverText.get_height()*5))
+
+                if player1score == 10:
+                    winnerText = myFont.render("PLAYER 1 WINS!", False, white)
+                    winnerText = pygame.transform.scale(winnerText, (winnerText.get_width()*2, winnerText.get_height()*2))
+                else:
+                    winnerText = myFont.render("PLAYER 2 WINS!", False, white)
+                    winnerText = pygame.transform.scale(winnerText, (winnerText.get_width()*2, winnerText.get_height()*2))
+                playText = myFont.render("RETRY", False, white)
+                playText = pygame.transform.scale(playText, (playText.get_width()*2, playText.get_height()*2))
+
+                exitText = myFont.render("EXIT", False, white)
+                exitText = pygame.transform.scale(exitText, (exitText.get_width()*2, exitText.get_height()*2))
+
+                playButton = playText.get_rect()
+                playButton.x, playButton.y = SCREEN_SIZE[0]/2 - playText.get_width()/2, 290
+
+                exitButton = exitText.get_rect()
+                exitButton.x, exitButton.y = SCREEN_SIZE[0]/2 - exitText.get_width()/2, 350
+
+                while game_over == True:
+                    mousePos = pygame.mouse.get_pos()
+                    for event in pygame.event.get():
+                        if event.type == QUIT:
+                            pygame.quit()
+                            pygame.font.quit()
+                            pygame.mixer.quit()
+                            sys.exit(0)
+                        if event.type == MOUSEBUTTONDOWN:
+                            if event.button == 1:
+                                if playButton.collidepoint(mousePos):
+                                    pygame.mixer.music.load("170170__timgormly__8-bit-pickup.mp3")
+                                    pygame.mixer.music.play()
+                                    pygame.time.wait(1000)
+                                    player1score, player2score = 0, 0
+                                    game_over = False                                        
+                                if exitButton.collidepoint(mousePos):
+                                    pygame.quit()
+                                    pygame.font.quit()
+                                    pygame.mixer.quit()
+                                    sys.exit(0)
+                        if event.type == KEYDOWN:
+                            if event.key == K_ESCAPE:
+                                pygame.mixer.music.load("pong.wav")
+                                pause = False
+
+                    screen.fill(black)
+                    screen.blit(gameOverText, (SCREEN_SIZE[0]/2 - gameOverText.get_width()/2 + 10, 40))
+                    screen.blit(winnerText, (SCREEN_SIZE[0]/2 - winnerText.get_width()/2, 150))
+                    screen.blit(playText, (SCREEN_SIZE[0]/2 - playText.get_width()/2, 290))
+                    screen.blit(exitText, (SCREEN_SIZE[0]/2 - exitText.get_width()/2, 350))
+                    pygame.display.update()
+                    Clock.tick(60)  
+            game_loop(player1score, player2score)
         if ball.x < 0:
             pygame.mixer.music.load("435413__v-ktor__explosion12.wav")
             pygame.mixer.music.play()
             player2score += 1
             pygame.time.wait(1000)
+            if player1score == 10 or player2score == 10:
+                game_over = True
+                gameOverText = myFont.render("GAME OVER", False, white)
+                gameOverText = pygame.transform.scale(gameOverText, (gameOverText.get_width()*5, gameOverText.get_height()*5))
+
+                if player1score == 10:
+                    winnerText = myFont.render("PLAYER 1 WINS!", False, white)
+                    winnerText = pygame.transform.scale(winnerText, (winnerText.get_width()*2, winnerText.get_height()*2))
+                else:
+                    winnerText = myFont.render("PLAYER 2 WINS!", False, white)
+                    winnerText = pygame.transform.scale(winnerText, (winnerText.get_width()*2, winnerText.get_height()*2))
+                playText = myFont.render("RETRY", False, white)
+                playText = pygame.transform.scale(playText, (playText.get_width()*2, playText.get_height()*2))
+
+                exitText = myFont.render("EXIT", False, white)
+                exitText = pygame.transform.scale(exitText, (exitText.get_width()*2, exitText.get_height()*2))
+
+                playButton = playText.get_rect()
+                playButton.x, playButton.y = SCREEN_SIZE[0]/2 - playText.get_width()/2, 290
+
+                exitButton = exitText.get_rect()
+                exitButton.x, exitButton.y = SCREEN_SIZE[0]/2 - exitText.get_width()/2, 350
+
+                while game_over == True:
+                    mousePos = pygame.mouse.get_pos()
+                    for event in pygame.event.get():
+                        if event.type == QUIT:
+                            pygame.quit()
+                            pygame.font.quit()
+                            pygame.mixer.quit()
+                            sys.exit(0)
+                        if event.type == MOUSEBUTTONDOWN:
+                            if event.button == 1:
+                                if playButton.collidepoint(mousePos):
+                                    pygame.mixer.music.load("170170__timgormly__8-bit-pickup.mp3")
+                                    pygame.mixer.music.play()
+                                    pygame.time.wait(1000)
+                                    player1score, player2score = 0, 0
+                                    game_over = False                                        
+                                if exitButton.collidepoint(mousePos):
+                                    pygame.quit()
+                                    pygame.font.quit()
+                                    pygame.mixer.quit()
+                                    sys.exit(0)
+                        if event.type == KEYDOWN:
+                            if event.key == K_ESCAPE:
+                                pygame.mixer.music.load("pong.wav")
+                                pause = False
+
+                    screen.fill(black)
+                    screen.blit(gameOverText, (SCREEN_SIZE[0]/2 - gameOverText.get_width()/2 + 10, 40))
+                    screen.blit(winnerText, (SCREEN_SIZE[0]/2 - winnerText.get_width()/2, 150))
+                    screen.blit(playText, (SCREEN_SIZE[0]/2 - playText.get_width()/2, 290))
+                    screen.blit(exitText, (SCREEN_SIZE[0]/2 - exitText.get_width()/2, 350))
+                    pygame.display.update()
+                    Clock.tick(60)  
             game_loop(player1score, player2score)
         if player2pad.colliderect(ball):
             pygame.mixer.music.play()
@@ -241,7 +358,7 @@ def game_loop(player1score, player2score):
             lasttick = curtick
         pygame.display.update()
         Clock.tick(60)
-
+    
 def main():
     initialize()
 
